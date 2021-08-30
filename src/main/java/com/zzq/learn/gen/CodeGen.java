@@ -25,7 +25,7 @@ public class CodeGen {
 
         GlobalConfig globalConfig = new GlobalConfig
                 .Builder()
-                .outputDir( System.getProperty("user.dir") + "\\src\\main\\java")
+                .outputDir(System.getProperty("user.dir") + "\\src\\main\\java")
                 .openDir(false)
 //                .fileOverride()
                 .author("ZZQ")
