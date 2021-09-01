@@ -20,7 +20,10 @@ public class R {
         return new R(data);
     }
     public static R fail(String msg) {
-        return new R(ERROR,msg);
+        return new R(ERROR, msg);
+    }
+    public static R fail(String msg, Object data) {
+        return new R(ERROR, msg, data);
     }
 
     /** constructor */
