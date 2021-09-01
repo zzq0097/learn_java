@@ -1,6 +1,7 @@
 package com.zzq.learn.gen;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
@@ -58,6 +59,7 @@ public class CodeGen {
                 .entityBuilder()
                     .superClass(BaseEntity.class)
                     .enableLombok()
+                    .idType(IdType.AUTO)
                     .naming(NamingStrategy.underline_to_camel)
                     .addTableFills(new Column("create_time", FieldFill.INSERT))
                     .addTableFills(new Column("update_time", FieldFill.INSERT_UPDATE))
