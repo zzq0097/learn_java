@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.generator.fill.Column;
 import com.zzq.learn.model.entity.base.BaseEntity;
 import com.zzq.learn.model.result.R;
 
-import java.util.Map;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class CodeGen {
@@ -42,7 +42,7 @@ public class CodeGen {
         GlobalConfig globalConfig = new GlobalConfig
                 .Builder()
                 .outputDir(javaDir)
-                .openDir(false)
+                .disableOpenDir()
 //                .fileOverride()
                 .author("ZZQ")
                 .build();
@@ -50,6 +50,7 @@ public class CodeGen {
         PackageConfig packageConfig = new PackageConfig
                 .Builder()
                 .parent("com.zzq.learn")
+                .pathInfo(Collections.singletonMap(OutputFile.mapperXml, resourcesDir + "\\mapper"))
                 .entity("model.entity")
                 .build();
 
@@ -76,10 +77,11 @@ public class CodeGen {
                 globalConfig,
                 new InjectionConfig.Builder().build()
         );
-        Map<String, String> pathInfo = configBuilder.getPathInfo();
-        pathInfo.put(ConstVal.XML_PATH, resourcesDir + "\\mapper");
 
         AutoGenerator autoGenerator = new AutoGenerator(dataSourceConfig).config(configBuilder);
+        autoGenerator.global(globalConfig);
+        autoGenerator.packageInfo(packageConfig);
+        autoGenerator.strategy(strategyConfig);
         autoGenerator.execute(new FreemarkerTemplateEngine());
     }
 }
