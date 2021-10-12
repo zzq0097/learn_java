@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.*;
-import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.baomidou.mybatisplus.generator.fill.Column;
@@ -69,16 +68,7 @@ public class CodeGen {
                     .enableRestStyle()
                 .build();
 
-        ConfigBuilder configBuilder = new ConfigBuilder(
-                packageConfig,
-                dataSourceConfig,
-                strategyConfig,
-                new TemplateConfig.Builder().build(),
-                globalConfig,
-                new InjectionConfig.Builder().build()
-        );
-
-        AutoGenerator autoGenerator = new AutoGenerator(dataSourceConfig).config(configBuilder);
+        AutoGenerator autoGenerator = new AutoGenerator(dataSourceConfig);
         autoGenerator.global(globalConfig);
         autoGenerator.packageInfo(packageConfig);
         autoGenerator.strategy(strategyConfig);
