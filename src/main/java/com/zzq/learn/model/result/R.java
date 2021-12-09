@@ -34,6 +34,7 @@ public class R {
     // success
     private R(Object data) {
         this.code = SUCCESS;
+        this.msg = "success";
         this.data = data;
     }
 
