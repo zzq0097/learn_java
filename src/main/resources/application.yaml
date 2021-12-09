@@ -1,5 +1,5 @@
 server:
-  port: 7777
+  port: 10710
 
 spring:
   datasource:
@@ -11,4 +11,4 @@ spring:
 mybatis-plus:
   mapper-locations: classpath*:mapper/*Mapper.xml
 #  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
