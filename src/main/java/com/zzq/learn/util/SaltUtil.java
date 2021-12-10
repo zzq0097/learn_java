@@ -7,21 +7,14 @@ import java.util.Objects;
 
 public class SaltUtil {
 
-    private static final char[] charArr = initCharArr();
-    private static char[] initCharArr() {
-        // ASCII码(0~z)
-        byte start = 48, end = 122;
-        char[] chars = new char[end - start + 1];
-        for (char i = 0; i < chars.length; i++) {
-            chars[i] = (char) (start + i);
-        }
-        return chars;
-    }
+    // ASCII码(0~z)
+    private static final byte start = 48, end = 122;
+    private static final byte saltLen = 6;
 
     public static String createSalt() {
-        char[] chars = new char[6];
-        for (int i = 0; i < chars.length; i++) {
-            chars[i] = charArr[RandomUtil.randomInt(0, charArr.length)];
+        char[] chars = new char[saltLen];
+        for (int i = 0; i < saltLen; i++) {
+            chars[i] = (char) RandomUtil.randomInt(start, end);
         }
         return new String(chars);
     }
