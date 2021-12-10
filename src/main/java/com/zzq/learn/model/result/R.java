@@ -24,6 +24,9 @@ public class R {
     public static R fail(SysError error) {
         return new R(error);
     }
+    public static R fail(SysError error, Object data) {
+        return new R(error.code, error.msg, data);
+    }
     public static R fail(String msg) {
         return new R(ERROR, msg);
     }

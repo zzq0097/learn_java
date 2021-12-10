@@ -1,4 +1,4 @@
-package com.zzq.learn.model.dto.base;
+package com.zzq.learn.model.dto;
 
 import lombok.Data;
 
