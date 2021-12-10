@@ -10,6 +10,7 @@ public enum SysError {
     DelFail(576, "删除失败"),
     DataRepeat(577, "数据重复"),
     CodeFail(513,"验证码错误"),
+    LoginFail(511, "密码错误"),
     Undefined(R.ERROR, "未定义错误");
 
     public final int code;

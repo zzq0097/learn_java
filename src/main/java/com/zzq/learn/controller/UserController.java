@@ -67,8 +67,9 @@ public class UserController extends R {
         long count = userService.query().eq("name", dto.getUsername()).count();
         if (count == 1) {
             User one = userService.query().eq("name", dto.getUsername()).one();
-            return SaltUtil.md5Eq(one.getPassword(), dto.getPassword(), one.getSalt()) ? ok() : fail();
-        }
+            return SaltUtil.md5Eq(one.getPassword(), dto.getPassword(), one.getSalt()) ? ok() : fail(SysError.LoginFail);
+        } else if (count == 0)
+            return fail("用户不存在");
         return fail();
     }
 
