@@ -9,11 +9,13 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class RegisterDTO {
     @NotBlank
-    private String name;
+    private String nickname;
     @NotBlank
     private String username;
     @NotBlank
     private String password;
+    private String tel;
+    private String email;
     @NotBlank
     private String code;
 }

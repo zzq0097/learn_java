@@ -8,7 +8,8 @@ public class R {
     private Object data;
 
     public static final int SUCCESS = 0;
-    public static final int ERROR = -1;
+    public static final int UndefinedError = -1;
+    public static final int CustomError = -2;
 
     /** method */
     public static R ok() {
@@ -28,7 +29,7 @@ public class R {
         return new R(error.code, error.msg, data);
     }
     public static R fail(String msg) {
-        return new R(ERROR, msg);
+        return new R(CustomError, msg);
     }
 
     /** constructor */
