@@ -10,6 +10,7 @@ import com.zzq.learn.enums.SysError;
 import com.zzq.learn.model.dto.LoginDTO;
 import com.zzq.learn.model.dto.PageDTO;
 import com.zzq.learn.model.dto.RegisterDTO;
+import com.zzq.learn.model.dto.UserUpdateDTO;
 import com.zzq.learn.model.entity.User;
 import com.zzq.learn.model.vo.UserInfoVO;
 import com.zzq.learn.service.IUserService;
@@ -78,6 +79,17 @@ public class UserController extends R {
         return fail();
     }
 
+    @GetMapping("status")
+    public R status(HttpSession session) {
+        return ok(session.getId());
+    }
+
+    @GetMapping("logout")
+    public R logout(HttpSession session) {
+        session.invalidate();
+        return ok();
+    }
+
     @PostMapping("reset")
     public R reset(Long userId, String oldPassword, String newPassword) {
         User user = userService.getById(userId);
@@ -86,9 +98,8 @@ public class UserController extends R {
         if (!SaltUtil.md5Eq(user.getPassword(), oldPassword, user.getSalt())) {
             return fail("原密码错误");
         }
-        String salt = SaltUtil.createSalt();
-        user.setSalt(salt);
-        user.setPassword(SaltUtil.md5(newPassword, salt));
+        user.setPassword(newPassword);
+        SaltUtil.setPassword(user);
         return userService.updateById(user) ? ok() : fail(SysError.UpdateFail);
     }
 
@@ -102,10 +113,15 @@ public class UserController extends R {
 
     @PostMapping("add")
     public R add(@RequestBody User user) {
-        String salt = SaltUtil.createSalt();
-        user.setSalt(salt);
-        user.setPassword(SaltUtil.md5(user.getPassword(), salt));
+        SaltUtil.setPassword(user);
         return userService.save(user) ? ok(user.getId()) : fail(SysError.AddFail);
+    }
+
+    @PostMapping("update")
+    public R update(@RequestBody UserUpdateDTO dto) {
+        User user = new User();
+        BeanUtil.copyProperties(dto, user);
+        return userService.updateById(user) ? ok() : fail(SysError.UpdateFail);
     }
 
     @PostMapping("del")
