@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.baomidou.mybatisplus.generator.fill.Column;
+import com.zzq.learn.consts.Sys;
+import com.zzq.learn.model.sys.DataSource;
 import com.zzq.learn.model.entity.base.BaseEntity;
 import com.zzq.learn.model.result.R;
 
@@ -14,9 +16,7 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class CodeGen {
-    static String dbUrl = "jdbc:mysql://127.0.0.1/test";
-    static String dbUserName = "root";
-    static String dbPassword = "123456";
+    static DataSource ds = Sys.DataSource;
     static String root = System.getProperty("user.dir");
     static String javaDir = root + "\\src\\main\\java";
     static String resourcesDir = root + "\\src\\main\\resources";
@@ -35,7 +35,7 @@ public class CodeGen {
 
     public static void exec(String ...include) {
         DataSourceConfig dataSourceConfig = new DataSourceConfig
-                .Builder(dbUrl, dbUserName, dbPassword)
+                .Builder(ds.getUrl(), ds.getUsername(), ds.getPassword())
                 .build();
 
         GlobalConfig globalConfig = new GlobalConfig
