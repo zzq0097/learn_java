@@ -38,7 +38,7 @@ import java.util.Objects;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
-public class UserController extends R {
+public class UserController {
     private final IUserService userService;
 
     @GetMapping("code")
@@ -50,13 +50,13 @@ public class UserController extends R {
     }
 
     @PostMapping("register")
-    public R register(@RequestBody @Valid RegisterDTO dto, HttpSession session) {
+    public R<?> register(@RequestBody @Valid RegisterDTO dto, HttpSession session) {
         if (!Objects.equals(dto.getCode(), session.getAttribute("code"))) {
-            return fail(SysError.CodeFail);
+            return R.fail(SysError.CodeFail);
         }
         long count = userService.query().eq("username", dto.getUsername()).or().eq("nickname",dto.getNickname()).count();
         if (count > 0) {
-            return fail(SysError.DataRepeat);
+            return R.fail(SysError.DataRepeat);
         }
         User user = new User();
         BeanUtil.copyProperties(dto, user);
@@ -64,69 +64,69 @@ public class UserController extends R {
     }
 
     @PostMapping("login")
-    public R login(@RequestBody @Valid LoginDTO dto) {
+    public R<?> login(@RequestBody @Valid LoginDTO dto) {
         long count = userService.query().eq("username", dto.getUsername()).count();
         if (count == 1) {
             User one = userService.query().eq("username", dto.getUsername()).one();
             if (SaltUtil.md5Eq(one.getPassword(), dto.getPassword(), one.getSalt())) {
                 UserInfoVO userInfo = new UserInfoVO();
                 BeanUtil.copyProperties(one,userInfo);
-                return ok(userInfo);
+                return R.ok(userInfo);
             }
-            return fail(SysError.LoginFail);
+            return R.fail(SysError.LoginFail);
         } else if (count == 0)
-            return fail("用户不存在");
-        return fail();
+            return R.fail("用户不存在");
+        return R.fail();
     }
 
     @GetMapping("status")
-    public R status(HttpSession session) {
-        return ok(session.getId());
+    public R<?> status(HttpSession session) {
+        return R.ok(session.getId());
     }
 
     @GetMapping("logout")
-    public R logout(HttpSession session) {
+    public R<?> logout(HttpSession session) {
         session.invalidate();
-        return ok();
+        return R.ok();
     }
 
     @PostMapping("reset")
-    public R reset(Long userId, String oldPassword, String newPassword) {
+    public R<?> reset(Long userId, String oldPassword, String newPassword) {
         User user = userService.getById(userId);
         if (user == null)
-            return fail("用户不存在");
+            return R.fail("用户不存在");
         if (!SaltUtil.md5Eq(user.getPassword(), oldPassword, user.getSalt())) {
-            return fail("原密码错误");
+            return R.fail("原密码错误");
         }
         user.setPassword(newPassword);
         SaltUtil.setPassword(user);
-        return userService.updateById(user) ? ok() : fail(SysError.UpdateFail);
+        return userService.updateById(user) ? R.ok() : R.fail(SysError.UpdateFail);
     }
 
     @GetMapping("get")
-    public R get(String nickname, PageDTO page) {
-        return ok(userService.query()
+    public R<?> get(String nickname, PageDTO page) {
+        return R.ok(userService.query()
                 .select("id,nickname,username,tel,email,create_time,update_time")
                 .eq(StrUtil.isNotBlank(nickname), "nickname", nickname)
                 .page(new Page<>(page.getCurr(), page.getSize())));
     }
 
     @PostMapping("add")
-    public R add(@RequestBody User user) {
+    public R<?> add(@RequestBody User user) {
         SaltUtil.setPassword(user);
-        return userService.save(user) ? ok(user.getId()) : fail(SysError.AddFail);
+        return userService.save(user) ? R.ok(user.getId()) : R.fail(SysError.AddFail);
     }
 
     @PostMapping("update")
-    public R update(@RequestBody UserUpdateDTO dto) {
+    public R<?> update(@RequestBody UserUpdateDTO dto) {
         User user = new User();
         BeanUtil.copyProperties(dto, user);
-        return userService.updateById(user) ? ok() : fail(SysError.UpdateFail);
+        return userService.updateById(user) ? R.ok() : R.fail(SysError.UpdateFail);
     }
 
     @PostMapping("del")
-    public R del(@RequestBody List<Long> ids) {
-        return userService.removeByIds(ids) ? ok() : fail(SysError.DelFail);
+    public R<?> del(@RequestBody List<Long> ids) {
+        return userService.removeByIds(ids) ? R.ok() : R.fail(SysError.DelFail);
     }
 
 }

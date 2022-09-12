@@ -13,10 +13,10 @@ import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice
-public class ExceptionControllerAdvice extends R {
+public class ExceptionControllerAdvice {
 
     @ExceptionHandler(Exception.class)
-    public R getException(Exception exception) {
+    public R<?> getException(Exception exception) {
         exception.printStackTrace();
         if (exception instanceof MethodArgumentNotValidException) {
             MethodArgumentNotValidException e = (MethodArgumentNotValidException) exception;
@@ -25,10 +25,10 @@ public class ExceptionControllerAdvice extends R {
                 for (FieldError error : e.getFieldErrors()) {
                     map.put(error.getField(), error.getDefaultMessage());
                 }
-                return fail(SysError.InvalidArgument, map);
+                return R.fail(SysError.InvalidArgument, map);
             }
         }
-        return fail(SysError.Undefined, exception.getMessage());
+        return R.fail(SysError.Undefined, exception.getMessage());
     }
 }
 

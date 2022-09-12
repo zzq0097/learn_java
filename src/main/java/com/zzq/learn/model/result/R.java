@@ -2,41 +2,41 @@ package com.zzq.learn.model.result;
 
 import com.zzq.learn.enums.SysError;
 
-public class R {
+public class R<T> {
     private int code;
     private String msg;
-    private Object data;
+    private T data;
 
     public static final int SUCCESS = 0;
     public static final int UndefinedError = -1;
     public static final int CustomError = -2;
 
     /** method */
-    public static R ok() {
-        return new R(SUCCESS,"success");
+    public static <T> R<T> ok() {
+        return new R<>(SUCCESS,"success");
     }
-    public static R ok(Object data) {
-        return new R(data);
+    public static <T> R<T> ok(T data) {
+        return new R<>(data);
     }
 
-    public static R fail() {
+    public static <T> R<T> fail() {
         return new R(SysError.Undefined);
     }
-    public static R fail(SysError error) {
-        return new R(error);
+    public static <T> R<T> fail(SysError error) {
+        return new R<>(error);
     }
-    public static R fail(SysError error, Object data) {
-        return new R(error.code, error.msg, data);
+    public static <T> R<T> fail(SysError error, T data) {
+        return new R<>(error.code, error.msg, data);
     }
-    public static R fail(String msg) {
-        return new R(CustomError, msg);
+    public static  <T> R<T> fail(String msg) {
+        return new R<>(CustomError, msg);
     }
 
     /** constructor */
     public R() {}
 
     // success
-    private R(Object data) {
+    private R(T data) {
         this.code = SUCCESS;
         this.msg = "success";
         this.data = data;
@@ -52,7 +52,7 @@ public class R {
         this.msg = msg;
     }
 
-    public R(int code, String msg, Object data) {
+    public R(int code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -79,7 +79,7 @@ public class R {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

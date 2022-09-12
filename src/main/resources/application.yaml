@@ -1,14 +1,19 @@
 # custom
 cfg:
-  server-port: ${SERVER_PORT:10710}
   db-host: ${DB_HOST:127.0.0.1}
   db-port: ${DB_PORT:3306}
   db-user: ${DB_USER:root}
   db-pwd: ${DB_PWD:123456}
 
+minio:
+  endpoint: http://127.0.0.1:8080
+  access_key: minio_admin
+  secret_key: minio_admin
+  app_bucket: test
+
 # configuration
 server:
-  port: ${cfg.server-port}
+  port: 8080
 
 spring:
   datasource:
