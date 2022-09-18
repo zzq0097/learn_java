@@ -12,13 +12,12 @@ import com.zzq.learn.model.dto.PageDTO;
 import com.zzq.learn.model.dto.RegisterDTO;
 import com.zzq.learn.model.dto.UserUpdateDTO;
 import com.zzq.learn.model.entity.User;
+import com.zzq.learn.model.result.R;
 import com.zzq.learn.model.vo.UserInfoVO;
 import com.zzq.learn.service.IUserService;
 import com.zzq.learn.util.SaltUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import com.zzq.learn.model.result.R;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -54,7 +53,7 @@ public class UserController {
         if (!Objects.equals(dto.getCode(), session.getAttribute("code"))) {
             return R.fail(SysError.CodeFail);
         }
-        long count = userService.query().eq("username", dto.getUsername()).or().eq("nickname",dto.getNickname()).count();
+        long count = userService.query().eq("username", dto.getUsername()).or().eq("nickname", dto.getNickname()).count();
         if (count > 0) {
             return R.fail(SysError.DataRepeat);
         }
@@ -70,7 +69,7 @@ public class UserController {
             User one = userService.query().eq("username", dto.getUsername()).one();
             if (SaltUtil.md5Eq(one.getPassword(), dto.getPassword(), one.getSalt())) {
                 UserInfoVO userInfo = new UserInfoVO();
-                BeanUtil.copyProperties(one,userInfo);
+                BeanUtil.copyProperties(one, userInfo);
                 return R.ok(userInfo);
             }
             return R.fail(SysError.LoginFail);

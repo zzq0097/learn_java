@@ -7,6 +7,8 @@ import org.springframework.boot.system.ApplicationHome;
 public interface Sys {
     String JarHome = new ApplicationHome().getDir().toString();
 
+    int AvailableProcessors = Runtime.getRuntime().availableProcessors();
+
     String Tab = "    ";
 
     DataSource DataSource = ConstUtil.getDataSource();
