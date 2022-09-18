@@ -1,12 +1,12 @@
 package com.zzq.learn.file;
 
 import cn.hutool.core.lang.Assert;
-import com.zzq.learn.config.bean.MinioConfig;
 import com.zzq.learn.model.result.R;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,8 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequiredArgsConstructor
 public class UploadController {
-    private final MinioConfig minioConfig;
     private final MinioClient minioClient;
+
+    @Value("#{minioConfig.appBucket}")
+    private String appBucket;
 
     @PostMapping("upload")
     public R<?> upload(MultipartFile file) {
@@ -25,7 +27,7 @@ public class UploadController {
         Assert.isTrue(!file.isEmpty(), "");
         try {
             minioClient.putObject(PutObjectArgs.builder()
-                    .bucket(minioConfig.getAppBucket())
+                    .bucket(appBucket)
                     .object(file.getOriginalFilename())
                     .contentType(file.getContentType())
                     .stream(file.getInputStream(), file.getSize(), -1)

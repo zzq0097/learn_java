@@ -3,6 +3,7 @@ package com.zzq.learn.config.bean;
 import com.zzq.learn.consts.Sys;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -16,6 +17,7 @@ public class ThreadPoolConfig {
     private final static int blockQueueSize = 100;
 
     @Bean("customThreadPool")
+    @Primary
     public ThreadPoolExecutor customThreadPool() {
         return new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, TimeUnit.SECONDS, new ArrayBlockingQueue<>(blockQueueSize));
     }

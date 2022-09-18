@@ -29,12 +29,12 @@ public class MybatisPlusConfig {
         return new MetaObjectHandler() {
             @Override
             public void insertFill(MetaObject metaObject) {
-                this.strictInsertFill(metaObject, "createTime", Long.class, System.currentTimeMillis()/1000);
+                this.strictInsertFill(metaObject, "createTime", Long.class, System.currentTimeMillis() / 1000);
             }
 
             @Override
             public void updateFill(MetaObject metaObject) {
-                this.strictUpdateFill(metaObject, "updateTime", Long.class, System.currentTimeMillis()/1000);
+                this.strictUpdateFill(metaObject, "updateTime", Long.class, System.currentTimeMillis() / 1000);
             }
         };
     }
