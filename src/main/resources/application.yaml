@@ -1,9 +1,9 @@
 # custom
 cfg:
-  db-host: ${DB_HOST:127.0.0.1}
-  db-port: ${DB_PORT:3306}
-  db-user: ${DB_USER:root}
-  db-pwd: ${DB_PWD:123456}
+  db-host: 127.0.0.1
+  db-port: 3306
+  db-user: root
+  db-pwd: 123456
 
 minio:
   endpoint: http://127.0.0.1:8080
@@ -21,6 +21,10 @@ spring:
     url: jdbc:mysql://${cfg.db-host}:${cfg.db-port}/test
     username: ${cfg.db-user}
     password: ${cfg.db-pwd}
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/*Mapper.xml

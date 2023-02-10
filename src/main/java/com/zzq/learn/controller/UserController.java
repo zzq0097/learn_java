@@ -7,6 +7,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zzq.learn.enums.SysError;
+import com.zzq.learn.event.LoginEvent;
 import com.zzq.learn.model.dto.LoginDTO;
 import com.zzq.learn.model.dto.PageDTO;
 import com.zzq.learn.model.dto.RegisterDTO;
@@ -17,6 +18,8 @@ import com.zzq.learn.model.vo.UserInfoVO;
 import com.zzq.learn.service.IUserService;
 import com.zzq.learn.util.SaltUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +41,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
+    private final ApplicationEventPublisher eventPublisher;
     private final IUserService userService;
 
     @GetMapping("code")
@@ -70,6 +74,7 @@ public class UserController {
             if (SaltUtil.md5Eq(one.getPassword(), dto.getPassword(), one.getSalt())) {
                 UserInfoVO userInfo = new UserInfoVO();
                 BeanUtil.copyProperties(one, userInfo);
+                eventPublisher.publishEvent(new LoginEvent());
                 return R.ok(userInfo);
             }
             return R.fail(SysError.LoginFail);
