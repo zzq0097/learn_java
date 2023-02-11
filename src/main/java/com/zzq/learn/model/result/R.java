@@ -7,49 +7,47 @@ public class R<T> {
     private String msg;
     private T data;
 
-    public static final int SUCCESS = 0;
+    public static final int SUCCESS = 1;
+    public static final int ERROR = 0;
     public static final int UndefinedError = -1;
     public static final int CustomError = -2;
 
-    /** method */
+    /**
+     * method
+     */
     public static <T> R<T> ok() {
-        return new R<>(SUCCESS,"success");
+        return new R<>(SUCCESS, "success", null);
     }
+
     public static <T> R<T> ok(T data) {
-        return new R<>(data);
+        return new R<>(SUCCESS, "success", data);
     }
 
     public static <T> R<T> fail() {
-        return new R(SysError.Undefined);
+        return new R<>(SysError.Undefined);
     }
+
     public static <T> R<T> fail(SysError error) {
         return new R<>(error);
     }
+
+    public static <T> R<T> fail(String msg) {
+        return new R<>(ERROR, msg, null);
+    }
+
     public static <T> R<T> fail(SysError error, T data) {
         return new R<>(error.code, error.msg, data);
     }
-    public static  <T> R<T> fail(String msg) {
-        return new R<>(CustomError, msg);
-    }
 
-    /** constructor */
-    public R() {}
-
-    // success
-    private R(T data) {
-        this.code = SUCCESS;
-        this.msg = "success";
-        this.data = data;
+    /**
+     * constructor
+     */
+    private R() {
     }
 
     private R(SysError error) {
         this.code = error.code;
         this.msg = error.msg;
-    }
-
-    public R(int code, String msg) {
-        this.code = code;
-        this.msg = msg;
     }
 
     public R(int code, String msg, T data) {
@@ -58,7 +56,9 @@ public class R<T> {
         this.data = data;
     }
 
-    /** getter,setter */
+    /**
+     * getter,setter
+     */
     public int getCode() {
         return code;
     }

@@ -18,7 +18,6 @@ import com.zzq.learn.model.vo.UserInfoVO;
 import com.zzq.learn.service.IUserService;
 import com.zzq.learn.util.SaltUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
