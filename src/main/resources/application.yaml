@@ -16,6 +16,8 @@ server:
   port: 8080
 
 spring:
+  profiles:
+    active: local-dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${cfg.db-host}:${cfg.db-port}/test
