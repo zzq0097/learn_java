@@ -12,4 +12,9 @@ public class MsgListener {
     public void consume(String message) {
         System.out.println(StrUtil.format("消费者消费消息 ===> {}", message));
     }
+
+    @RabbitListener(queues = "sys.dead.queue")
+    public void deadMsg(String message) {
+        System.out.println(StrUtil.format("dead消息 ===> {}", message));
+    }
 }
