@@ -15,8 +15,7 @@ public class SimpleTest {
 
     @Test
     public void test() {
-        rabbitTemplate.send(ExchangeTypes.TOPIC, "test", new Message("Hello".getBytes()));
-
+        rabbitTemplate.send("directExchange", "directRouting", new Message("Hello".getBytes()));
     }
 
 }
