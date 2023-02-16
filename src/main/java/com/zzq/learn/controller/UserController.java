@@ -17,13 +17,13 @@ import com.zzq.learn.model.result.R;
 import com.zzq.learn.model.vo.UserInfoVO;
 import com.zzq.learn.service.IUserService;
 import com.zzq.learn.util.SaltUtil;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
