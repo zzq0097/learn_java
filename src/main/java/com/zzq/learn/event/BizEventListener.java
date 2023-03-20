@@ -6,6 +6,6 @@ public class BizEventListener {
 
     @EventListener
     public void loginHandler(LoginEvent event) {
-        System.out.println(event.getUser().getNickname());
+        System.out.println(event.getSysUser().getNickname());
     }
 }

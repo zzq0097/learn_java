@@ -12,10 +12,10 @@ import com.zzq.learn.model.dto.LoginDTO;
 import com.zzq.learn.model.dto.PageDTO;
 import com.zzq.learn.model.dto.RegisterDTO;
 import com.zzq.learn.model.dto.UserUpdateDTO;
-import com.zzq.learn.model.entity.User;
+import com.zzq.learn.model.entity.SysUser;
 import com.zzq.learn.model.result.R;
 import com.zzq.learn.model.vo.UserInfoVO;
-import com.zzq.learn.service.IUserService;
+import com.zzq.learn.service.ISysUserService;
 import com.zzq.learn.util.SaltUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -39,9 +39,9 @@ import java.util.Objects;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
-public class UserController {
+public class SysUserController {
     private final ApplicationEventPublisher eventPublisher;
-    private final IUserService userService;
+    private final ISysUserService userService;
 
     @GetMapping("code")
     public void code(HttpServletResponse response, HttpSession session) throws IOException {
@@ -60,16 +60,16 @@ public class UserController {
         if (count > 0) {
             return R.fail(SysError.DataRepeat);
         }
-        User user = new User();
-        BeanUtil.copyProperties(dto, user);
-        return add(user);
+        SysUser sysUser = new SysUser();
+        BeanUtil.copyProperties(dto, sysUser);
+        return add(sysUser);
     }
 
     @PostMapping("login")
     public R<?> login(@RequestBody @Valid LoginDTO dto) {
         long count = userService.query().eq("username", dto.getUsername()).count();
         if (count == 1) {
-            User one = userService.query().eq("username", dto.getUsername()).one();
+            SysUser one = userService.query().eq("username", dto.getUsername()).one();
             if (SaltUtil.md5Eq(one.getPassword(), dto.getPassword(), one.getSalt())) {
                 UserInfoVO userInfo = new UserInfoVO();
                 BeanUtil.copyProperties(one, userInfo);
@@ -95,15 +95,15 @@ public class UserController {
 
     @PostMapping("reset")
     public R<?> reset(Long userId, String oldPassword, String newPassword) {
-        User user = userService.getById(userId);
-        if (user == null)
+        SysUser sysUser = userService.getById(userId);
+        if (sysUser == null)
             return R.fail("用户不存在");
-        if (!SaltUtil.md5Eq(user.getPassword(), oldPassword, user.getSalt())) {
+        if (!SaltUtil.md5Eq(sysUser.getPassword(), oldPassword, sysUser.getSalt())) {
             return R.fail("原密码错误");
         }
-        user.setPassword(newPassword);
-        SaltUtil.setPassword(user);
-        return userService.updateById(user) ? R.ok() : R.fail(SysError.UpdateFail);
+        sysUser.setPassword(newPassword);
+        SaltUtil.setPassword(sysUser);
+        return userService.updateById(sysUser) ? R.ok() : R.fail(SysError.UpdateFail);
     }
 
     @GetMapping("get")
@@ -115,16 +115,16 @@ public class UserController {
     }
 
     @PostMapping("add")
-    public R<?> add(@RequestBody User user) {
-        SaltUtil.setPassword(user);
-        return userService.save(user) ? R.ok(user.getId()) : R.fail(SysError.AddFail);
+    public R<?> add(@RequestBody SysUser sysUser) {
+        SaltUtil.setPassword(sysUser);
+        return userService.save(sysUser) ? R.ok(sysUser.getId()) : R.fail(SysError.AddFail);
     }
 
     @PostMapping("update")
     public R<?> update(@RequestBody UserUpdateDTO dto) {
-        User user = new User();
-        BeanUtil.copyProperties(dto, user);
-        return userService.updateById(user) ? R.ok() : R.fail(SysError.UpdateFail);
+        SysUser sysUser = new SysUser();
+        BeanUtil.copyProperties(dto, sysUser);
+        return userService.updateById(sysUser) ? R.ok() : R.fail(SysError.UpdateFail);
     }
 
     @PostMapping("del")

@@ -5,21 +5,21 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.2</version>
+        <version>3.0.4</version>
         <relativePath/>
     </parent>
     <groupId>com.zzq</groupId>
     <artifactId>learn</artifactId>
     <version>v1</version>
     <name>learn</name>
-    <description>Demo project for Spring Boot</description>
+    <description>学习</description>
     <properties>
         <java.version>17</java.version>
-        <hutool.version>5.8.11</hutool.version>
+        <hutool.version>5.8.15</hutool.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
-        <minio.version>8.4.6</minio.version>
-        <netty.version>4.1.86.Final</netty.version>
-        <mysql-connector.version>8.0.31</mysql-connector.version>
+        <minio.version>8.5.2</minio.version>
+        <netty.version>4.1.90.Final</netty.version>
+        <mysql-connector.version>8.0.32</mysql-connector.version>
     </properties>
     <dependencies>
 

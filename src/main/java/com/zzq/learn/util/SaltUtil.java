@@ -2,7 +2,7 @@ package com.zzq.learn.util;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.MD5;
-import com.zzq.learn.model.entity.User;
+import com.zzq.learn.model.entity.SysUser;
 
 import java.util.Objects;
 
@@ -28,10 +28,10 @@ public class SaltUtil {
         return Objects.equals(md5, md5(password, salt));
     }
 
-    public static void setPassword(User user) {
+    public static void setPassword(SysUser sysUser) {
         String salt = createSalt();
-        user.setSalt(salt);
-        user.setPassword(md5(user.getPassword(), salt));
+        sysUser.setSalt(salt);
+        sysUser.setPassword(md5(sysUser.getPassword(), salt));
     }
 
 }

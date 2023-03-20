@@ -1,16 +1,16 @@
 package com.zzq.learn.mapper;
 
-import com.zzq.learn.model.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zzq.learn.model.entity.SysUser;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author ZZQ
  * @since 2021-12-09
  */
-public interface UserMapper extends BaseMapper<User> {
+public interface SysUserMapper extends BaseMapper<SysUser> {
 
 }
