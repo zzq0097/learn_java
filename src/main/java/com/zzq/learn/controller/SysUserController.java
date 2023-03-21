@@ -87,13 +87,17 @@ public class SysUserController {
     }
 
     @PostMapping("login2")
-    public R<?> login2(@RequestBody @Valid LoginDTO dto) {
+    public R<?> login2(@RequestBody @Valid LoginDTO dto, HttpSession httpSession) {
+        String code = httpSession.getAttribute("code").toString();
+        if (!StrUtil.equals(code, dto.getCode())) {
+            return R.fail("验证码错误");
+        }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         if (authenticate != null && authenticate.isAuthenticated()) {
             return R.ok();
         }
-        return R.fail();
+        return R.fail("登陆失败");
     }
 
     @GetMapping("status")
