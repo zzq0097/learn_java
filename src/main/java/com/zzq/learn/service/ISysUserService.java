@@ -2,6 +2,9 @@ package com.zzq.learn.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zzq.learn.model.entity.SysUser;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,17 @@ import com.zzq.learn.model.entity.SysUser;
  */
 public interface ISysUserService extends IService<SysUser> {
 
+    SysUser findUserByUsername(String username);
+
+    SysUser findUserById(Long userId);
+
+    List<SysUser> listUser();
+
+    SysUser createUser(SysUser sysUser);
+
+    SysUser updateUser(SysUser sysUser);
+
+    void deleteUser(Long userId);
+
+    void deleteUsers(List<Long> ids);
 }

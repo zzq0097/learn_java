@@ -8,6 +8,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zzq.learn.enums.SysError;
 import com.zzq.learn.event.LoginEvent;
+import com.zzq.learn.mapper.SysUserMapper;
 import com.zzq.learn.model.dto.LoginDTO;
 import com.zzq.learn.model.dto.PageDTO;
 import com.zzq.learn.model.dto.RegisterDTO;
@@ -46,6 +47,7 @@ public class SysUserController {
     private final ApplicationEventPublisher eventPublisher;
     private final ISysUserService userService;
     private final AuthenticationManager authenticationManager;
+    private final SysUserMapper sysUserMapper;
 
     @GetMapping("code")
     public void code(HttpServletResponse response, HttpSession session) throws IOException {
@@ -60,8 +62,7 @@ public class SysUserController {
         if (!Objects.equals(dto.getCode(), session.getAttribute("code"))) {
             return R.fail(SysError.CodeFail);
         }
-        long count = userService.query().eq("username", dto.getUsername()).or().eq("nickname", dto.getNickname()).count();
-        if (count > 0) {
+        if (sysUserMapper.userExists(dto.getUsername())) {
             return R.fail(SysError.DataRepeat);
         }
         SysUser sysUser = new SysUser();
@@ -147,7 +148,8 @@ public class SysUserController {
 
     @PostMapping("del")
     public R<?> del(@RequestBody List<Long> ids) {
-        return userService.removeByIds(ids) ? R.ok() : R.fail(SysError.DelFail);
+        userService.deleteUsers(ids);
+        return R.ok();
     }
 
 }

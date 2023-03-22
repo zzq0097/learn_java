@@ -20,7 +20,7 @@ spring:
     active: local-dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${cfg.db-host}:${cfg.db-port}/test
+    url: jdbc:mysql://${cfg.db-host}:${cfg.db-port}/learn
     username: ${cfg.db-user}
     password: ${cfg.db-pwd}
   data:

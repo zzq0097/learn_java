@@ -1,5 +1,8 @@
 package com.zzq.learn.config.security;
 
+import com.zzq.learn.mapper.SysUserMapper;
+import com.zzq.learn.model.entity.SysUser;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -7,13 +10,16 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
-    
+    private final SysUserMapper sysUserMapper;
+
     private final static String[] pass = {
             "/user/login2",
             "/user/code"
@@ -47,12 +53,15 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            // TODO 查询用户信息
-            return User.builder()
-                    .username("admin")
-                    .password(passwordEncoder().encode("123456"))
-                    .authorities("ROLE_ADMIN", "admin:all")
-                    .build();
+            SysUser sysUser = sysUserMapper.selectByUsername(username);
+            if (sysUser != null) {
+                return User.builder()
+                        .username(sysUser.getUsername())
+                        .password(passwordEncoder().encode(sysUser.getPassword()))
+                        .authorities("ROLE_ADMIN", "admin:all")
+                        .build();
+            }
+            throw new UsernameNotFoundException("用户不存在");
         };
     }
 
