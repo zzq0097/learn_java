@@ -1,0 +1,23 @@
+cfg:
+  db-host: 8.131.66.130
+  db-port: 3306
+  db-user: root
+  db-pwd: zzq0097
+
+minio:
+  endpoint: http://8.131.66.130:10790
+  access_key: zzq0097
+  secret_key: zy971117.
+  app_bucket: test
+
+spring:
+  data:
+    redis:
+      host: 8.131.66.130
+      port: 10779
+      password: zy971117.
+  rabbitmq:
+    host: 8.131.66.130
+    port: 10762
+    username: zzq
+    password: zy971117.
