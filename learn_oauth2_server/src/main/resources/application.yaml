@@ -1,1 +1,14 @@
 
+server:
+  port: 9999
+
+spring:
+  application:
+    name: oauth-server
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      username: oauth_server
+      password: oauth_server
+
