@@ -12,3 +12,6 @@ spring:
       username: oauth_server
       password: oauth_server
 
+#logging:
+#  level:
+#    root: debug
