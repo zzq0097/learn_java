@@ -1,0 +1,14 @@
+
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          test-client:
+            client-id: messaging-client
+            client-secret: secret
+            authorization-grant-type: code
+        provider:
+          test-client:
+            authorization-uri: ""
