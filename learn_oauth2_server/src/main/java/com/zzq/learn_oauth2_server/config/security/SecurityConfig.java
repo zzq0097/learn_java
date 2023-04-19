@@ -1,19 +1,22 @@
-package com.zzq.learn_oauth2_server.config;
+package com.zzq.learn_oauth2_server.config.security;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.zzq.learn_oauth2_server.config.security.custom.RestAuthenticationEntryPoint;
+import com.zzq.learn_oauth2_server.config.security.custom.RestAuthenticationFilter;
+import com.zzq.learn_oauth2_server.config.security.custom.RestAuthenticationProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
@@ -27,8 +30,8 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -57,32 +60,23 @@ public class SecurityConfig {
     @Bean
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        String[] array = authorizationServerSettings().getSettings().values().stream().map(Object::toString).peek(System.out::println).toArray(String[]::new);
-
-        http.authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(array).permitAll()
-                        .requestMatchers("/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                // Form login handles the redirect to the login page from the
-                // authorization server filter chain
-//                .formLogin(Customizer.withDefaults());
+        http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
                 .csrf().disable()
                 .formLogin().disable()
-                .logout().disable();
+                .exceptionHandling()
+                .authenticationEntryPoint(new RestAuthenticationEntryPoint());
 
+        http.addFilterBefore(new RestAuthenticationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails userDetails = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build();
 
-        return new InMemoryUserDetailsManager(userDetails);
+    @Autowired
+    public RestAuthenticationProvider restAuthenticationProvider;
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        return new ProviderManager(restAuthenticationProvider);
     }
 
     @Bean
