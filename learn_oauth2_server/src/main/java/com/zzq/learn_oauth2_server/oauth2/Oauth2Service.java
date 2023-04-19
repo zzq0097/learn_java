@@ -31,15 +31,19 @@ public class Oauth2Service {
         });
 
 
+
+
         OAuth2AccessToken accessToken = tokenGenerator.generate(OAuth2TokenClaimsContext.with(OAuth2TokenClaimsSet.builder()
                         .claim("aaa", "bbb"))
                 .registeredClient(registeredClientRepository.findByClientId("messaging-client"))
                 .tokenType(OAuth2TokenType.ACCESS_TOKEN)
                 .build());
 
+
+
         OAuth2AccessToken accessToken2 = tokenGenerator.generate(
                 JwtEncodingContext.with(
-                        JwsHeader.with(SignatureAlgorithm.ES256),
+                        JwsHeader.with(SignatureAlgorithm.RS256),
                         JwtClaimsSet.builder()
                 ).build());
         return accessToken.getTokenValue();
