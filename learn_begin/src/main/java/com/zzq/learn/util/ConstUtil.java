@@ -8,7 +8,7 @@ import com.zzq.learn.model.sys.DataSource;
 public class ConstUtil {
 
     public static DataSource getDataSource() {
-        Dict yaml = YamlUtil.load(ResourceUtil.getUtf8Reader("application.yaml"));
+        Dict yaml = YamlUtil.load(ResourceUtil.getUtf8Reader("application.yml"));
         return yaml.getByPath("spring.datasource", DataSource.class);
     }
 
