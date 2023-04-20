@@ -6,6 +6,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.zzq.learn_oauth2_server.common.constants.Sys;
+import com.zzq.learn_oauth2_server.config.security.custom.CustomTokenStore;
 import com.zzq.learn_oauth2_server.config.security.custom.RestAuthenticationEntryPoint;
 import com.zzq.learn_oauth2_server.config.security.custom.RestAuthenticationFilter;
 import com.zzq.learn_oauth2_server.config.security.custom.RestAuthenticationProvider;
@@ -51,11 +52,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    public OAuth2AuthorizationService oAuth2AuthorizationService() {
-        return new InMemoryOAuth2AuthorizationService();
-    }
-
-    @Bean
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
@@ -69,13 +65,27 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint());
 
-        http.addFilterBefore(new RestAuthenticationFilter(authenticationManager(), oAuth2AuthorizationService()), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(restAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
-
     @Autowired
     public RestAuthenticationProvider restAuthenticationProvider;
+
+    @Bean
+    public RestAuthenticationFilter restAuthenticationFilter() {
+        return new RestAuthenticationFilter(authenticationManager(), customTokenStore());
+    }
+    
+    @Bean
+    public OAuth2AuthorizationService oAuth2AuthorizationService() {
+        return new InMemoryOAuth2AuthorizationService();
+    }
+
+    @Bean
+    public CustomTokenStore customTokenStore() {
+        return new CustomTokenStore(oAuth2AuthorizationService());
+    }
 
     @Bean
     public AuthenticationManager authenticationManager() {
