@@ -57,4 +57,4 @@ build/
 hs_err_pid*
 
 
-*.application-local-dev.dev.yaml
+application-local-dev.yaml
