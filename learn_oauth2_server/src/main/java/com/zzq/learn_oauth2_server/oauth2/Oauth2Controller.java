@@ -34,11 +34,11 @@ public class Oauth2Controller {
     }
 
     /**
-     *
+     * 第三方登录
      */
     @PostMapping("login/{system}")
     public R<?> login(@PathVariable String system) {
-        oauth2Service.login();
+
         return R.ok();
     }
 

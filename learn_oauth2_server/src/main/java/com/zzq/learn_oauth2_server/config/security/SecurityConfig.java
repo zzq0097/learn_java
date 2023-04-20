@@ -60,7 +60,10 @@ public class SecurityConfig {
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
                 .csrf().disable()
+                // 停用表单登录, 使用自定义Rest登录并生成token
                 .formLogin().disable()
+                // 停用退出登录, 使用[/oauth2/revoke]移除token
+                .logout().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint());
 
