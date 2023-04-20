@@ -21,7 +21,7 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
         String systemId = multipleSystemAuthenticationToken.getSystemId();
         String username = multipleSystemAuthenticationToken.getName();
         String password = multipleSystemAuthenticationToken.getCredentials().toString();
-        SysUser sysUser = sysUserMapper.selectUserWithSystemId(systemId, username, password).orElseThrow(() -> new AuthenticationServiceException(""));
+        SysUser sysUser = sysUserMapper.selectUserWithSystemId(systemId, username, password).orElseThrow(() -> new AuthenticationServiceException("用户不存在"));
         return new MultipleSystemAuthenticationToken(username, password, AuthorityUtils.createAuthorityList("hahah", "dasdad"), sysUser);
     }
 

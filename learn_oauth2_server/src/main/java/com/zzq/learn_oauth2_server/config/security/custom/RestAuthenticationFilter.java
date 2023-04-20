@@ -34,12 +34,14 @@ public class RestAuthenticationFilter extends UsernamePasswordAuthenticationFilt
             MultipleSystemAuthenticationToken authenticationToken = (MultipleSystemAuthenticationToken) authentication;
             SysUser sysUser = authenticationToken.getSysUser();
 
+            // 生成AccessToken
             OAuth2AccessToken accessToken = new OAuth2AccessTokenGenerator().generate(DefaultOAuth2TokenContext.builder()
                     .registeredClient(Sys.DefaultClient)
                     .tokenType(OAuth2TokenType.ACCESS_TOKEN)
                     .principal(authentication)
                     .build());
 
+            // 存起来 [/oauth2/introspect] 会验证这个token
             oAuth2AuthorizationService.save(OAuth2Authorization
                     .withRegisteredClient(Sys.DefaultClient)
                     .token(accessToken, stringObjectMap -> {
