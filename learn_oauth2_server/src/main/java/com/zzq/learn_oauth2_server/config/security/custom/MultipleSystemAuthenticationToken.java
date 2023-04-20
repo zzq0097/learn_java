@@ -3,6 +3,7 @@ package com.zzq.learn_oauth2_server.config.security.custom;
 import com.zzq.learn_oauth2_server.sys.user.SysUser;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
@@ -19,6 +20,11 @@ public class MultipleSystemAuthenticationToken extends UsernamePasswordAuthentic
         super(principal, credentials, authorities);
         this.systemId = sysUser.getSystemId();
         this.sysUser = sysUser;
+        this.setDetails(User.builder()
+                .username(sysUser.getUsername())
+                .password(sysUser.getPassword())
+                .authorities(authorities)
+                .build());
     }
 
     public String getSystemId() {
