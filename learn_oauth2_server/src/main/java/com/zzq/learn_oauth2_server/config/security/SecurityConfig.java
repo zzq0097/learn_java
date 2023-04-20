@@ -7,7 +7,6 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.zzq.learn_oauth2_server.common.constants.Sys;
 import com.zzq.learn_oauth2_server.config.security.custom.CustomTokenStore;
-import com.zzq.learn_oauth2_server.config.security.custom.RestAuthenticationEntryPoint;
 import com.zzq.learn_oauth2_server.config.security.custom.RestAuthenticationFilter;
 import com.zzq.learn_oauth2_server.config.security.custom.RestAuthenticationProvider;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
@@ -26,7 +24,6 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -45,8 +42,8 @@ public class SecurityConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-                .oidc(Customizer.withDefaults());
+//        http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
+//                .oidc(Customizer.withDefaults());
 
         return http.build();
     }
@@ -55,15 +52,19 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/oauth2/**").permitAll()
+                        .requestMatchers(
+                                "/oauth2/login/**",
+                                "/oauth2/callback/**"
+                        ).permitAll()
                         .anyRequest().authenticated())
                 .csrf().disable()
                 // 停用表单登录, 使用自定义Rest登录并生成token
                 .formLogin().disable()
                 // 停用退出登录, 使用[/oauth2/revoke]移除token
                 .logout().disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(new RestAuthenticationEntryPoint());
+//                .exceptionHandling()
+//                .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+        ;
 
         http.addFilterBefore(restAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
@@ -76,7 +77,7 @@ public class SecurityConfig {
     public RestAuthenticationFilter restAuthenticationFilter() {
         return new RestAuthenticationFilter(authenticationManager(), customTokenStore());
     }
-    
+
     @Bean
     public OAuth2AuthorizationService oAuth2AuthorizationService() {
         return new InMemoryOAuth2AuthorizationService();
