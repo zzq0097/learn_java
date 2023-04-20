@@ -1,11 +1,20 @@
 package com.zzq.learn_oauth2_server.oauth2;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.zzq.learn_oauth2_server.common.constants.Sys;
 import com.zzq.learn_oauth2_server.common.model.resp.R;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import me.zhyd.oauth.model.AuthCallback;
+import me.zhyd.oauth.model.AuthResponse;
+import me.zhyd.oauth.request.AuthRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -33,21 +42,36 @@ public class Oauth2Controller {
         return R.ok();
     }
 
+    /* ----------------------------- */
+
     /**
      * 第三方登录
      */
-    @PostMapping("login/{system}")
-    public R<?> login(@PathVariable String system) {
-
-        return R.ok();
+    @GetMapping("login/{system}")
+    public void login(@PathVariable String system, HttpServletResponse httpServletResponse) throws Exception {
+        AuthRequest authRequest = Sys.authRequestMap.get(system);
+        httpServletResponse.sendRedirect(authRequest.authorize("state"));
     }
 
     /**
-     *
+     * 第三方登录回调
      */
-    @PostMapping("logout")
-    public R<?> logout() {
-        return R.ok();
+    @GetMapping("callback/{system}")
+    public R<?> callback(@PathVariable String system, AuthCallback authCallback, HttpServletRequest httpServletRequest) throws Exception {
+        AuthRequest authRequest = Sys.authRequestMap.get(system);
+        AuthResponse<?> authResponse = authRequest.login(authCallback);
+
+        if (authResponse.ok()) {
+            JSONObject obj = JSONUtil.parseObj(authResponse.getData());
+            Object uuid = obj.get("uuid");
+
+            // TODO
+            // 1. 第一次登录创建用户
+            // 2. 注册后并登录返回token
+
+            return R.ok(authResponse.getData());
+        }
+        return R.fail("登录失败");
     }
 
 
@@ -56,7 +80,8 @@ public class Oauth2Controller {
 
     // - GET  /oauth2/authorize
     // - POST /oauth2/token
-    // - POST /oauth2/
+    // - POST /oauth2/introspect
+    // - POST /oauth2/revoke
 
 
 

@@ -1,5 +1,10 @@
 package com.zzq.learn_oauth2_server.common.constants;
 
+import cn.hutool.core.util.StrUtil;
+import me.zhyd.oauth.AuthRequestBuilder;
+import me.zhyd.oauth.config.AuthConfig;
+import me.zhyd.oauth.config.AuthDefaultSource;
+import me.zhyd.oauth.request.AuthRequest;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
@@ -7,6 +12,9 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public interface Sys {
 
@@ -22,4 +30,15 @@ public interface Sys {
             .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
             .tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.REFERENCE).build())
             .build();
+
+    Map<String, AuthRequest> authRequestMap = new HashMap<>() {{
+       put("gitee", AuthRequestBuilder.builder()
+               .source("gitee")
+               .authConfig(AuthConfig.builder()
+                       .clientId("")
+                       .clientSecret("")
+                       .redirectUri("http://127.0.0.1:9999/oauth2/callback/gitee")
+                       .build())
+               .build());
+    }};
 }

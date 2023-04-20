@@ -58,7 +58,9 @@ public class SecurityConfig {
     @Bean
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
+        http.authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/oauth2/**").permitAll()
+                        .anyRequest().authenticated())
                 .csrf().disable()
                 // 停用表单登录, 使用自定义Rest登录并生成token
                 .formLogin().disable()
