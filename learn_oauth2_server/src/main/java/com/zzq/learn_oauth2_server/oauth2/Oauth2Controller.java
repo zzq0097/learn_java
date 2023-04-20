@@ -2,18 +2,14 @@ package com.zzq.learn_oauth2_server.oauth2;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.zzq.learn_oauth2_server.common.constants.Sys;
 import com.zzq.learn_oauth2_server.common.model.resp.R;
+import com.zzq.learn_oauth2_server.config.properties.JustAuthClientsProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.request.AuthRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -49,7 +45,7 @@ public class Oauth2Controller {
      */
     @GetMapping("login/{system}")
     public void login(@PathVariable String system, HttpServletResponse httpServletResponse) throws Exception {
-        AuthRequest authRequest = Sys.authRequestMap.get(system);
+        AuthRequest authRequest = JustAuthClientsProperties.authRequestMap.get(system);
         httpServletResponse.sendRedirect(authRequest.authorize("state"));
     }
 
@@ -58,7 +54,7 @@ public class Oauth2Controller {
      */
     @GetMapping("callback/{system}")
     public R<?> callback(@PathVariable String system, AuthCallback authCallback, HttpServletRequest httpServletRequest) throws Exception {
-        AuthRequest authRequest = Sys.authRequestMap.get(system);
+        AuthRequest authRequest = JustAuthClientsProperties.authRequestMap.get(system);
         AuthResponse<?> authResponse = authRequest.login(authCallback);
 
         if (authResponse.ok()) {
@@ -82,7 +78,6 @@ public class Oauth2Controller {
     // - POST /oauth2/token
     // - POST /oauth2/introspect
     // - POST /oauth2/revoke
-
 
 
 }

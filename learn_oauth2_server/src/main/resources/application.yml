@@ -3,6 +3,8 @@ server:
   port: 9999
 
 spring:
+  profiles:
+    active: local-dev
   application:
     name: oauth-server
   data:
@@ -11,6 +13,13 @@ spring:
       port: 6379
       username: oauth_server
       password: oauth_server
+
+just-auth:
+  clients:
+    gitee:
+      client-id: client-id
+      client-secret: client-secret
+      redirect-uri: http://127.0.0.1:9999/oauth2/callback/gitee
 
 #logging:
 #  level:
