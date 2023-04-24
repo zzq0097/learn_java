@@ -1,0 +1,9 @@
+server:
+  port: 9980
+
+spring:
+  application:
+    name: service-consumer
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
