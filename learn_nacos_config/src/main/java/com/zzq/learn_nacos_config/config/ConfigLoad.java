@@ -12,7 +12,8 @@ public class ConfigLoad {
     /**
      * 添加bootstrap.yml 写入基本配置 [需要依赖spring-cloud-starter-bootstrap]
      * <p>
-     * 在Nacos配置中心添加${prefix}-${spring.profiles.active}.${file-extension}文件
+     * 在Nacos配置中心添加${prefix}-${spring.profiles.active}.${file-extension}文件 [Data ID]
+     * ex. config-service.yaml << test: test2
      * <p>
      * 项目启动会从配置中心拉取配置文件
      * <p>
