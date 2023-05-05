@@ -1,0 +1,12 @@
+server:
+  port: 9906
+
+spring:
+  application:
+    name: consumer
+  cloud:
+    zookeeper:
+      connect-string: localhost:2181
+      discovery:
+        enabled: true
+        register: true

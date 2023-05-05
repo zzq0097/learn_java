@@ -1,0 +1,13 @@
+server:
+  port: 9905
+
+spring:
+  application:
+    name: provider
+  cloud:
+    zookeeper:
+      connect-string: localhost:2181
+      discovery:
+        enabled: true
+        register: true
+
