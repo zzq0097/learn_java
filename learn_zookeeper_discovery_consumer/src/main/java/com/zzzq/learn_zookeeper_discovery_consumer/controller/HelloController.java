@@ -1,6 +1,6 @@
 package com.zzzq.learn_zookeeper_discovery_consumer.controller;
 
-import com.zzzq.learn_zookeeper_discovery_consumer.fegin.HelloService;
+import com.zzzq.learn_zookeeper_discovery_consumer.feign.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -20,7 +20,7 @@ public class HelloController {
     private DiscoveryClient discoveryClient;
 
     private final static String providerName = "provider";
-    
+
     @GetMapping("hello")
     public String hello() {
         List<ServiceInstance> instances = discoveryClient.getInstances(providerName);

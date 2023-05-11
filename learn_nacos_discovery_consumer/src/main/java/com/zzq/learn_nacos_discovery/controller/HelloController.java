@@ -1,6 +1,6 @@
 package com.zzq.learn_nacos_discovery.controller;
 
-import com.zzq.learn_nacos_discovery.fegin.HelloService;
+import com.zzq.learn_nacos_discovery.feign.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.zzq.learn_nacos_discovery.fegin;
+package com.zzq.learn_nacos_discovery.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
