@@ -1,0 +1,11 @@
+server:
+  port: 9951
+
+spring:
+  application:
+    name: eureka-provider
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://192.168.31.159:9950/eureka/
