@@ -23,9 +23,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -46,7 +43,7 @@ import java.util.Objects;
 public class SysUserController {
     private final ApplicationEventPublisher eventPublisher;
     private final ISysUserService userService;
-    private final AuthenticationManager authenticationManager;
+    //    private final AuthenticationManager authenticationManager;
     private final SysUserMapper sysUserMapper;
 
     @GetMapping("code")
@@ -93,11 +90,11 @@ public class SysUserController {
         if (!StrUtil.equals(code, dto.getCode())) {
             return R.fail("验证码错误");
         }
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
-        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-        if (authenticate != null && authenticate.isAuthenticated()) {
-            return R.ok();
-        }
+//        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
+//        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
+//        if (authenticate != null && authenticate.isAuthenticated()) {
+//            return R.ok();
+//        }
         return R.fail("登陆失败");
     }
 

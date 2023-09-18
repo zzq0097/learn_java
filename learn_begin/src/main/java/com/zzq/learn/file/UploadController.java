@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UploadController {
     private final MinioClient minioClient;
 
-    @Value("#{minioConfig.appBucket}")
+    @Value("${minioConfig.appBucket}")
     private String appBucket;
 
     @PostMapping("upload")
