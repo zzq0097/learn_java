@@ -1,4 +1,4 @@
-package com.zzzq.learn_zookeeper_discovery_consumer;
+package com.zzq.learn_zookeeper_discovery_consumer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

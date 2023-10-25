@@ -1,4 +1,4 @@
-package com.zzzq.learn_zookeeper_discovery_consumer.feign;
+package com.zzq.learn_zookeeper_discovery_consumer.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;

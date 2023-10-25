@@ -1,4 +1,4 @@
-package com.zzzq.learn_zookeeper_discovery_consumer.config;
+package com.zzq.learn_zookeeper_discovery_consumer.config;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
