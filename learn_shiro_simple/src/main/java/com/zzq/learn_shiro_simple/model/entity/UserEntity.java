@@ -4,7 +4,9 @@ import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import com.mybatisflex.core.activerecord.Model;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * 实体类。
@@ -12,9 +14,10 @@ import lombok.Data;
  * @author ZZQ
  * @since 1.0
  */
-@Data
+@Accessors(chain = true)
+@Data(staticConstructor = "create")
 @Table(value = "user")
-public class UserEntity {
+public class UserEntity extends Model<UserEntity> {
 
     @Id(keyType = KeyType.Auto)
     private Long id;
