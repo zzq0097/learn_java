@@ -5,6 +5,7 @@
     <groupId>com.zzq</groupId>
     <artifactId>learn_java_parent</artifactId>
     <version>v1</version>
+    <packaging>pom</packaging>
     <name>learn_java_parent</name>
     <description>学习</description>
 
