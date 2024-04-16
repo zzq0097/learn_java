@@ -1,0 +1,8 @@
+server:
+  port: 9912
+
+dubbo:
+  application:
+    name: consumer
+  registry:
+    address: nacos://127.0.0.1:8848
